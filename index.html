@@ -73,9 +73,13 @@
         </div>
     </div>
 
-    <div id="globalLoader" class="fixed inset-0 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center transition-opacity">
-        <div class="w-12 h-12 border-4 border-gray-200 border-t-app-blue rounded-full animate-spin"></div>
-        <p class="mt-4 font-bold text-gray-600 dark:text-gray-300">Memproses...</p>
+    <div id="globalLoader" class="fixed inset-0 bg-white dark:bg-dark-bg z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative flex items-center justify-center mb-6">
+            <div class="absolute w-24 h-24 bg-app-blue/20 rounded-full animate-ping"></div>
+            <img src="icon.png" class="w-20 h-20 relative z-10 rounded-3xl shadow-2xl animate-pulse bg-white object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7DqjwvdGV4dD48L3N2Zz4='">
+        </div>
+        <p class="font-black text-lg tracking-widest text-app-blue dark:text-blue-400 uppercase">GarasiKu</p>
+        <p class="text-xs font-bold text-gray-400 dark:text-gray-500 mt-1 uppercase tracking-tighter">Syncing Cloud Data...</p>
     </div>
 
     <div id="authPage" class="fixed inset-0 bg-app-bg dark:bg-dark-bg z-50 hidden flex-col items-center justify-center p-4">
@@ -85,12 +89,10 @@
             <p class="text-xs text-gray-500 mb-6">Data tersimpan aman & online.</p>
 
             <form id="authForm" onsubmit="window.handleAuth(event)" class="space-y-4 text-left">
-                
                 <div id="nameFieldGroup" class="hidden transition-all duration-300">
                     <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Nama Panggilan</label>
                     <input type="text" id="authName" placeholder="Cth: Budi" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-app-blue outline-none dark:text-white transition-colors">
                 </div>
-
                 <div>
                     <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Email</label>
                     <input type="email" id="authEmail" required class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-app-blue outline-none dark:text-white transition-colors">
@@ -116,14 +118,12 @@
         <nav class="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-dark-border sticky top-0 z-40">
             <div class="max-w-6xl mx-auto px-4 sm:px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <img src="icon.png" class="w-8 h-8 rounded-lg shadow-sm shrink-0" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7DqjwvdGV4dD48L3N2Zz4='">
+                    <img src="icon.png" class="w-8 h-8 rounded-lg shadow-sm shrink-0 object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7DqjwvdGV4dD48L3N2Zz4='">
                     <div>
                         <h1 class="text-lg md:text-xl font-extrabold tracking-tight leading-tight">GarasiKu</h1>
                         <p id="userGreeting" class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 font-semibold leading-tight">Halo, Pengguna!</p>
                     </div>
-                    
                     <div class="w-px h-6 bg-gray-200 dark:bg-slate-700 mx-1"></div>
-
                     <div id="syncIndicator" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 transition-all duration-500 shrink-0">
                         <div id="syncIcon" class="text-xs">☁️</div>
                         <span id="syncText" class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter hidden sm:inline">Synced</span>
@@ -135,13 +135,11 @@
                         <button onclick="window.gantiModeAplikasi('motor')" id="btnMotor" class="px-4 py-1.5 rounded-lg text-sm font-bold mode-transition flex items-center gap-2">🏍️ <span class="hidden sm:inline">Motor</span></button>
                         <button onclick="window.gantiModeAplikasi('mobil')" id="btnMobil" class="px-4 py-1.5 rounded-lg text-sm font-bold mode-transition flex items-center gap-2">🚗 <span class="hidden sm:inline">Mobil</span></button>
                     </div>
-
                     <div class="w-px h-6 bg-gray-300 dark:bg-slate-600 mx-1 hidden sm:block"></div>
-
-                    <button onclick="window.bukaModalTambah()" class="bg-blue-50 dark:bg-blue-900/30 text-app-blue dark:text-blue-400 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-blue-100 transition whitespace-nowrap">+ Tambah</button>
+                    <button onclick="window.bukaModalTambah()" class="bg-blue-50 dark:bg-blue-900/30 text-app-blue dark:text-blue-400 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-blue-100 transition">+ Tambah</button>
                     <button onclick="window.toggleTheme()" class="w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-lg transition shrink-0"><span id="themeIcon">🌙</span></button>
-                    <button onclick="window.bukaModalProfil()" class="w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-lg transition shrink-0 hover:bg-gray-200 dark:hover:bg-slate-700" title="Pengaturan Akun">⚙️</button>
-                    <button onclick="window.logoutUser()" class="w-9 h-9 rounded-full bg-red-50 dark:bg-red-900/20 text-red-500 flex items-center justify-center text-lg transition shrink-0 hover:bg-red-100" title="Keluar">🚪</button>
+                    <button onclick="window.bukaModalProfil()" class="w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-lg transition shrink-0" title="Pengaturan">⚙️</button>
+                    <button onclick="window.logoutUser()" class="w-9 h-9 rounded-full bg-red-50 dark:bg-red-900/20 text-red-500 flex items-center justify-center text-lg transition shrink-0" title="Keluar">🚪</button>
                 </div>
             </div>
         </nav>
@@ -151,20 +149,19 @@
             <div id="emptyState" class="col-span-12 text-center py-20 hidden">
                 <span id="emptyIcon" class="text-6xl mb-4 block opacity-50">🚘</span>
                 <h2 class="text-2xl font-bold mb-2" id="emptyTitle">Garasi Masih Kosong</h2>
-                <p class="text-gray-500 dark:text-gray-400 mb-6" id="emptyDesc">Tambahkan kendaraan untuk mulai mencatat.</p>
-                <button onclick="window.bukaModalTambah()" class="bg-app-blue text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 dark:shadow-none hover:bg-blue-600 transition">+ Tambah Kendaraan</button>
+                <p class="text-gray-500 dark:text-gray-400 mb-6">Tambahkan kendaraan untuk mulai mencatat.</p>
+                <button onclick="window.bukaModalTambah()" class="bg-app-blue text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-600 transition">+ Tambah Kendaraan</button>
             </div>
 
             <div id="panelKiri" class="lg:col-span-5 space-y-5 lg:sticky lg:top-24 mb-6 lg:mb-0 hidden flex-col max-h-[85vh]">
                 <div class="bg-white dark:bg-dark-card p-4 rounded-[1.5rem] shadow-sm border border-gray-100 dark:border-dark-border shrink-0">
                     <label class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2">Pilih Kendaraan Anda</label>
                     <select id="vehicleSelector" onchange="window.gantiKendaraanAktif()" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white text-lg font-bold rounded-xl px-4 py-3 focus:ring-2 focus:ring-app-blue outline-none appearance-none"></select>
-                    
                     <div class="mt-3 flex justify-between items-center">
                         <span id="labelPlat" class="bg-gray-100 dark:bg-slate-800 px-3 py-1 rounded-md text-xs font-mono font-bold border tracking-widest border-gray-200 dark:border-slate-700"></span>
                         <div class="flex gap-2">
-                            <button onclick="window.bukaModalEdit()" class="text-xs text-blue-500 hover:text-blue-600 font-semibold bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded">Edit</button>
-                            <button onclick="window.hapusKendaraanAktif()" class="text-xs text-red-500 hover:text-red-600 font-semibold bg-red-50 dark:bg-red-900/20 px-3 py-1 rounded">Hapus</button>
+                            <button onclick="window.bukaModalEdit()" class="text-xs text-blue-500 bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded font-bold">Edit</button>
+                            <button onclick="window.hapusKendaraanAktif()" class="text-xs text-red-500 bg-red-50 dark:bg-red-900/20 px-3 py-1 rounded font-bold">Hapus</button>
                         </div>
                     </div>
                 </div>
@@ -180,7 +177,7 @@
                 </div>
 
                 <div class="bg-white dark:bg-dark-card p-5 rounded-[2rem] shadow-sm border border-gray-100 dark:border-dark-border shrink-0">
-                    <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wider text-center mb-3">Odometer di Speedometer</p>
+                    <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wider text-center mb-3">Odometer Saat Ini</p>
                     <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 flex flex-col items-center border-2 border-transparent focus-within:border-app-blue/30 transition-all">
                         <div class="flex items-end gap-1">
                             <input type="number" id="inputKM" placeholder="0" oninput="window.updateOdometer()" class="w-full max-w-[150px] bg-transparent text-center text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white focus:outline-none focus:text-app-blue">
@@ -189,19 +186,30 @@
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-dark-card rounded-[2rem] shadow-sm border border-gray-100 dark:border-dark-border flex-grow flex flex-col overflow-hidden min-h-[250px]">
+                <div class="bg-white dark:bg-dark-card rounded-[2rem] shadow-sm border border-gray-100 dark:border-dark-border flex-grow flex flex-col overflow-hidden min-h-[200px]">
                     <div class="p-4 border-b border-gray-50 dark:border-slate-700/50 shrink-0 flex justify-between items-center">
                         <h3 class="font-bold text-sm">Riwayat Servis</h3>
-                        <span id="badgeHistori" class="bg-blue-50 dark:bg-blue-900/30 text-app-blue dark:text-blue-400 text-[10px] font-bold px-2 py-1 rounded-lg">0</span>
+                        <span id="badgeHistori" class="bg-blue-50 dark:bg-blue-900/30 text-app-blue text-[10px] font-bold px-2 py-1 rounded-lg">0</span>
                     </div>
                     <div class="p-2 overflow-y-auto history-scroll h-full" id="historyList"></div>
+                </div>
+
+                <div class="bg-gradient-to-br from-gray-900 to-slate-800 p-4 rounded-[1.5rem] shadow-lg border border-white/10 flex items-center gap-4 transition-transform hover:scale-[1.02] duration-300">
+                    <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-xl shrink-0 backdrop-blur-md">💻</div>
+                    <div>
+                        <h4 class="font-black text-[12px] text-white tracking-wide uppercase leading-tight">Developed By</h4>
+                        <p class="text-xs text-app-blue font-extrabold mt-0.5">Rifqi Huzaifi S.H.</p>
+                        <a href="https://instagram.com/rifqi.huzaifi" target="_blank" class="flex items-center gap-1 text-[10px] text-gray-400 hover:text-white transition-colors mt-1 font-bold">
+                            📸 @rifqi.huzaifi
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div id="panelKanan" class="lg:col-span-7 hidden pb-10">
                 <div class="flex items-center justify-between mb-4 px-1">
                     <h2 class="text-lg font-extrabold tracking-tight">Status Komponen</h2>
-                    <span id="labelMode" class="text-xs bg-gray-100 dark:bg-slate-800 px-3 py-1 rounded-full font-semibold text-gray-500"></span>
+                    <span id="labelMode" class="text-[10px] bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full font-black text-app-blue uppercase"></span>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-3 md:gap-4" id="componentGrid"></div>
             </div>
@@ -214,15 +222,15 @@
             <div class="space-y-4 mt-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Merek & Tipe</label>
-                    <input type="text" id="newVehName" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 outline-none dark:text-white">
+                    <input type="text" id="newVehName" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-app-blue outline-none dark:text-white">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Plat Nomor</label>
-                    <input type="text" id="newVehPlate" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm uppercase font-mono focus:ring-2 outline-none dark:text-white">
+                    <input type="text" id="newVehPlate" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm uppercase font-mono focus:ring-2 focus:ring-app-blue outline-none dark:text-white">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Jatuh Tempo Pajak</label>
-                    <input type="date" id="newVehTax" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 outline-none dark:text-white">
+                    <input type="date" id="newVehTax" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-app-blue outline-none dark:text-white">
                 </div>
             </div>
             <div class="flex gap-3 mt-8">
@@ -235,21 +243,19 @@
     <div id="modalProfil" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-dark-card p-6 md:p-8 rounded-[2rem] w-full max-w-md shadow-2xl border border-gray-100 dark:border-slate-700">
             <h2 class="text-2xl font-extrabold mb-1 dark:text-white">Pengaturan Akun</h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">Ubah nama panggilan atau password Anda.</p>
-            
-            <div class="space-y-4">
+            <div class="space-y-4 mt-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Nama Panggilan</label>
-                    <input type="text" id="editUserName" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 outline-none dark:text-white transition">
+                    <input type="text" id="editUserName" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm dark:text-white">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Ganti Password (Opsional)</label>
-                    <input type="password" id="editUserPass" placeholder="Kosongkan jika tidak ingin mengganti" minlength="6" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 outline-none dark:text-white transition">
+                    <input type="password" id="editUserPass" placeholder="Kosongkan jika tidak diganti" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm dark:text-white">
                 </div>
             </div>
             <div class="flex gap-3 mt-8">
-                <button onclick="window.tutupModalProfil()" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-bold dark:bg-slate-800 dark:text-gray-300 hover:bg-gray-200 transition">Batal</button>
-                <button onclick="window.simpanProfil()" class="flex-1 bg-app-blue text-white py-3 rounded-xl font-bold hover:bg-blue-600 transition">Simpan Perubahan</button>
+                <button onclick="window.tutupModalProfil()" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-bold dark:bg-slate-800 dark:text-gray-300">Batal</button>
+                <button onclick="window.simpanProfil()" class="flex-1 bg-app-blue text-white py-3 rounded-xl font-bold">Simpan</button>
             </div>
         </div>
     </div>
@@ -262,7 +268,7 @@
         const installModal = document.getElementById('installPromptModal');
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); deferredPrompt = e;
-            setTimeout(() => installModal.classList.remove('translate-y-full'), 2000); 
+            setTimeout(() => installModal.classList.remove('translate-y-full'), 3000); 
         });
         document.getElementById('btnInstallApp').addEventListener('click', async () => {
             installModal.classList.add('translate-y-full'); 
@@ -272,7 +278,6 @@
     </script>
 
     <script type="module">
-        // TAMBAHKAN IMPORT FUNGSI RESET & UPDATE PASSWORD
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updatePassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
@@ -322,231 +327,127 @@
             ]
         };
 
-        // --- FUNGSI INDICATOR SYNC ---
         function setSyncStatus(status) {
-            const indicator = document.getElementById('syncIndicator');
-            const icon = document.getElementById('syncIcon');
-            const text = document.getElementById('syncText');
-            if(!indicator || !icon || !text) return;
-            
+            const ind = document.getElementById('syncIndicator');
+            const ico = document.getElementById('syncIcon');
+            const txt = document.getElementById('syncText');
+            if(!ind || !ico || !txt) return;
             if (status === 'syncing') {
-                indicator.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 transition-all";
-                icon.innerHTML = "🔄"; icon.className = "text-xs animate-spin-slow";
-                text.innerText = "Syncing..."; text.className = "text-[10px] font-bold text-app-blue uppercase tracking-tighter hidden sm:inline";
+                ind.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 transition-all";
+                ico.innerHTML = "🔄"; ico.className = "text-xs animate-spin-slow"; txt.innerText = "Syncing...";
             } else {
                 setTimeout(() => {
-                    indicator.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 transition-all";
-                    icon.innerHTML = "☁️✅"; icon.className = "text-xs";
-                    text.innerText = "Synced"; text.className = "text-[10px] font-bold text-app-green uppercase tracking-tighter hidden sm:inline";
+                    ind.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 transition-all";
+                    ico.innerHTML = "☁️✅"; ico.className = "text-xs"; txt.innerText = "Synced";
                 }, 500);
             }
         }
 
-        // --- AUTHENTIKASI & PENGATURAN USER ---
         onAuthStateChanged(auth, async (user) => {
-            const loader = document.getElementById('globalLoader');
             if (user) {
-                currentUser = user;
-                await loadDataFromCloud();
+                currentUser = user; await loadDataFromCloud();
                 document.getElementById('authPage').classList.add('hidden');
                 document.getElementById('appWrapper').classList.remove('hidden');
                 setTimeout(() => document.getElementById('appWrapper').classList.remove('opacity-0'), 100);
             } else {
-                currentUser = null;
-                document.getElementById('authPage').classList.remove('hidden');
-                document.getElementById('authPage').classList.add('flex');
-                document.getElementById('appWrapper').classList.add('hidden');
+                currentUser = null; document.getElementById('authPage').classList.remove('hidden');
+                document.getElementById('authPage').classList.add('flex'); document.getElementById('appWrapper').classList.add('hidden');
             }
-            if(loader) loader.classList.add('hidden'); 
+            document.getElementById('globalLoader').classList.add('hidden'); 
         });
 
         window.toggleAuthMode = function() {
             isLoginMode = !isLoginMode;
             document.getElementById('btnAuthSubmit').innerText = isLoginMode ? 'Masuk' : 'Daftar Akun Baru';
+            document.getElementById('nameFieldGroup').classList.toggle('hidden', isLoginMode);
             document.getElementById('authModeText').innerText = isLoginMode ? 'Belum punya akun?' : 'Sudah punya akun?';
             document.getElementById('authModeBtn').innerText = isLoginMode ? 'Daftar' : 'Masuk';
-            
-            const nameGroup = document.getElementById('nameFieldGroup');
-            if (isLoginMode) { nameGroup.classList.add('hidden'); } 
-            else { nameGroup.classList.remove('hidden'); }
         }
 
         window.handleAuth = async function(e) {
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
             const pass = document.getElementById('authPassword').value;
-            const loader = document.getElementById('globalLoader');
             const namaInput = document.getElementById('authName').value.trim();
-
-            if (!isLoginMode && !namaInput) { return alert("Harap masukkan Nama Panggilan Anda untuk mendaftar!"); }
-
-            if(loader) loader.classList.remove('hidden');
+            document.getElementById('globalLoader').classList.remove('hidden');
             try {
-                if (isLoginMode) { 
-                    await signInWithEmailAndPassword(auth, email, pass); 
-                } else { 
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, pass); 
+                if (isLoginMode) { await signInWithEmailAndPassword(auth, email, pass); }
+                else {
+                    const res = await createUserWithEmailAndPassword(auth, email, pass);
                     userName = namaInput;
-                    await setDoc(doc(db, "userData", userCredential.user.uid), {
-                        userName: userName, vehicles: [], activeIdMotor: null, activeIdMobil: null, modeApp: 'motor'
-                    });
+                    await setDoc(doc(db, "userData", res.user.uid), { userName, vehicles: [], activeIdMotor: null, activeIdMobil: null, modeApp: 'motor' });
                 }
-            } catch (error) {
-                if(loader) loader.classList.add('hidden');
-                alert("Gagal: " + error.message);
-            }
+            } catch (err) { alert(err.message); document.getElementById('globalLoader').classList.add('hidden'); }
         }
 
-        window.logoutUser = function() { if(confirm("Yakin ingin keluar?")) signOut(auth); }
-
-        // FUNGSI LUPA PASSWORD
+        window.logoutUser = function() { if(confirm("Keluar?")) signOut(auth); }
         window.lupaPassword = async function() {
-            const email = document.getElementById('authEmail').value.trim();
-            if(!email) {
-                alert("Harap ketik alamat email Anda di kolom Email, kemudian klik 'Lupa Password?' kembali.");
-                return;
-            }
-            try {
-                await sendPasswordResetEmail(auth, email);
-                alert(`Link reset password telah dikirim ke ${email}. Silakan cek kotak masuk atau folder spam Anda.`);
-            } catch (error) {
-                alert("Gagal mengirim link reset: " + error.message);
-            }
+            const email = document.getElementById('authEmail').value;
+            if(!email) return alert("Ketik email Anda!");
+            try { await sendPasswordResetEmail(auth, email); alert("Cek email reset!"); } catch(e) { alert(e.message); }
         }
 
-        // FUNGSI GANTI PROFIL (MODAL)
-        window.bukaModalProfil = function() {
-            document.getElementById('editUserName').value = userName;
-            document.getElementById('editUserPass').value = '';
-            document.getElementById('modalProfil').classList.remove('hidden');
-        }
-
-        window.tutupModalProfil = function() {
-            document.getElementById('modalProfil').classList.add('hidden');
-        }
-
-        window.simpanProfil = async function() {
-            const newName = document.getElementById('editUserName').value.trim();
-            const newPass = document.getElementById('editUserPass').value;
-
-            if(!newName) return alert("Nama tidak boleh kosong!");
-
-            const loader = document.getElementById('globalLoader');
-            if(loader) loader.classList.remove('hidden');
-
-            try {
-                // Update Name ke Firebase jika berubah
-                if(newName !== userName) {
-                    userName = newName;
-                    await saveToCloud();
-                    const sapaan = document.getElementById('userGreeting');
-                    if(sapaan) sapaan.innerText = `Halo, ${userName.split(' ')[0]}!`;
-                }
-
-                // Update Password jika diisi
-                if(newPass) {
-                    await updatePassword(currentUser, newPass);
-                    alert("Profil dan Password berhasil diubah!");
-                } else {
-                    alert("Profil berhasil diperbarui!");
-                }
-                
-                window.tutupModalProfil();
-            } catch (error) {
-                // Jika error Firebase mengharuskan login ulang
-                if(error.code === 'auth/requires-recent-login') {
-                    alert("Sistem Keamanan: Anda harus Keluar (Logout) dan Masuk (Login) kembali sebelum bisa mengganti password.");
-                } else {
-                    alert("Gagal menyimpan profil: " + error.message);
-                }
-            }
-            if(loader) loader.classList.add('hidden');
-        }
-
-
-        // --- SISTEM CLOUD (LOAD & SAVE) ---
         async function loadDataFromCloud() {
             setSyncStatus('syncing');
             try {
-                const docSnap = await getDoc(doc(db, "userData", currentUser.uid));
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    userName = data.userName || "Pengguna"; 
-                    vehicles = data.vehicles || [];
-                    activeIdMotor = data.activeIdMotor || null;
-                    activeIdMobil = data.activeIdMobil || null;
-                    modeApp = data.modeApp || 'motor';
-                } else {
-                    userName = "Pengguna";
+                const snap = await getDoc(doc(db, "userData", currentUser.uid));
+                if (snap.exists()) {
+                    const d = snap.data(); userName = d.userName || "Pengguna";
+                    vehicles = d.vehicles || []; activeIdMotor = d.activeIdMotor || null;
+                    activeIdMobil = d.activeIdMobil || null; modeApp = d.modeApp || 'motor';
                 }
-                const sapaan = document.getElementById('userGreeting');
-                if(sapaan) sapaan.innerText = `Halo, ${userName.split(' ')[0]}!`;
-
-                window.gantiModeAplikasi(modeApp);
-                setSyncStatus('synced');
-            } catch(e) { console.error("Load fail", e); }
+                const greet = document.getElementById('userGreeting');
+                if(greet) greet.innerText = `Halo, ${userName.split(' ')[0]}!`;
+                window.gantiModeAplikasi(modeApp); setSyncStatus('synced');
+            } catch(e) { console.log(e); }
         }
 
         async function saveToCloud() {
             if(!currentUser) return;
             setSyncStatus('syncing');
             try {
-                await setDoc(doc(db, "userData", currentUser.uid), {
-                    userName: userName, vehicles: vehicles, activeIdMotor: activeIdMotor, activeIdMobil: activeIdMobil, modeApp: modeApp
-                });
+                await setDoc(doc(db, "userData", currentUser.uid), { userName, vehicles, activeIdMotor, activeIdMobil, modeApp });
                 setSyncStatus('synced');
-            } catch(e) { alert("Gagal menyimpan ke Cloud."); }
+            } catch(e) { alert("Fail Sync"); }
         }
 
         function getVehiclesByMode() { return vehicles.filter(v => v.type === modeApp); }
         function getActiveVehicle() { return vehicles.find(v => v.id === (modeApp === 'motor' ? activeIdMotor : activeIdMobil)); }
 
-        // --- LOGIKA UI UTAMA ---
         window.gantiModeAplikasi = function(targetMode) {
-            modeApp = targetMode;
-            saveToCloud(); 
-            
-            const btnMtr = document.getElementById('btnMotor');
-            const btnMbl = document.getElementById('btnMobil');
-            const lblMode = document.getElementById('labelMode');
-
-            if(btnMtr && btnMbl) {
-                btnMtr.className = modeApp === 'motor' ? "px-4 py-1.5 rounded-lg text-sm font-bold bg-white dark:bg-dark-card shadow-sm text-app-blue" : "px-4 py-1.5 rounded-lg text-sm font-bold text-gray-500 hover:text-gray-700 dark:hover:text-gray-300";
-                btnMbl.className = modeApp === 'mobil' ? "px-4 py-1.5 rounded-lg text-sm font-bold bg-white dark:bg-dark-card shadow-sm text-app-blue" : "px-4 py-1.5 rounded-lg text-sm font-bold text-gray-500 hover:text-gray-700 dark:hover:text-gray-300";
+            modeApp = targetMode; saveToCloud();
+            const btnM = document.getElementById('btnMotor'); const btnMb = document.getElementById('btnMobil');
+            const lbl = document.getElementById('labelMode');
+            if(btnM && btnMb) {
+                btnM.className = modeApp === 'motor' ? "px-4 py-1.5 rounded-lg text-sm font-bold bg-white dark:bg-dark-card shadow-sm text-app-blue" : "px-4 py-1.5 rounded-lg text-sm font-bold text-gray-500 hover:text-gray-700 dark:hover:text-gray-300";
+                btnMb.className = modeApp === 'mobil' ? "px-4 py-1.5 rounded-lg text-sm font-bold bg-white dark:bg-dark-card shadow-sm text-app-blue" : "px-4 py-1.5 rounded-lg text-sm font-bold text-gray-500 hover:text-gray-700 dark:hover:text-gray-300";
             }
-            if(lblMode) lblMode.innerText = modeApp === 'motor' ? 'Part Motor' : 'Part Mobil';
+            if(lbl) lbl.innerText = modeApp === 'motor' ? 'Part Motor' : 'Part Mobil';
             initAppData();
         }
 
         function initAppData() {
-            const listMode = getVehiclesByMode();
-            if(modeApp === 'motor' && !activeIdMotor && listMode.length > 0) activeIdMotor = listMode[0].id;
-            if(modeApp === 'mobil' && !activeIdMobil && listMode.length > 0) activeIdMobil = listMode[0].id;
+            const list = getVehiclesByMode();
+            if(modeApp === 'motor' && !activeIdMotor && list.length > 0) activeIdMotor = list[0].id;
+            if(modeApp === 'mobil' && !activeIdMobil && list.length > 0) activeIdMobil = list[0].id;
 
             const pKiri = document.getElementById('panelKiri');
             const pKanan = document.getElementById('panelKanan');
             const eState = document.getElementById('emptyState');
-            const eTitle = document.getElementById('emptyTitle');
 
-            if (listMode.length === 0) {
-                if(pKiri) pKiri.classList.add('hidden'); 
-                if(pKanan) pKanan.classList.add('hidden'); 
+            if (list.length === 0) {
+                if(pKiri) pKiri.classList.add('hidden'); if(pKanan) pKanan.classList.add('hidden');
                 if(eState) eState.classList.remove('hidden');
-                if(eTitle) eTitle.innerText = modeApp === 'motor' ? 'Garasi Motor Kosong' : 'Garasi Mobil Kosong';
             } else {
                 if(pKiri) { pKiri.classList.remove('hidden'); pKiri.classList.add('flex'); }
-                if(pKanan) pKanan.classList.remove('hidden'); 
-                if(eState) eState.classList.add('hidden');
-                
-                const selector = document.getElementById('vehicleSelector');
-                if(selector) {
-                    selector.innerHTML = '';
-                    const activeId = modeApp === 'motor' ? activeIdMotor : activeIdMobil;
-                    listMode.forEach(v => {
+                if(pKanan) pKanan.classList.remove('hidden'); if(eState) eState.classList.add('hidden');
+                const sel = document.getElementById('vehicleSelector');
+                if(sel) {
+                    sel.innerHTML = ''; const aid = modeApp === 'motor' ? activeIdMotor : activeIdMobil;
+                    list.forEach(v => {
                         const opt = document.createElement('option');
-                        opt.value = v.id; opt.innerText = v.name;
-                        if(v.id === activeId) opt.selected = true;
-                        selector.appendChild(opt);
+                        opt.value = v.id; opt.innerText = v.name; if(v.id === aid) opt.selected = true;
+                        sel.appendChild(opt);
                     });
                 }
                 renderAll();
@@ -554,189 +455,136 @@
         }
 
         window.gantiKendaraanAktif = function() {
-            const selector = document.getElementById('vehicleSelector');
-            if(!selector) return;
-            if(modeApp === 'motor') activeIdMotor = selector.value; else activeIdMobil = selector.value;
+            const s = document.getElementById('vehicleSelector'); if(!s) return;
+            if(modeApp === 'motor') activeIdMotor = s.value; else activeIdMobil = s.value;
             saveToCloud(); renderAll();
         }
 
         function renderAll() {
-            const v = getActiveVehicle();
-            if(!v) return;
-            
-            const plat = document.getElementById('labelPlat');
-            const inputK = document.getElementById('inputKM');
-            if(plat) plat.innerText = v.plate;
-            if(inputK) inputK.value = v.odometer > 0 ? v.odometer : '';
-            
-            renderPajak(v.taxDate); 
-            analisaKomponen(v); 
-            renderLogHistori(v);
+            const v = getActiveVehicle(); if(!v) return;
+            const p = document.getElementById('labelPlat'); const i = document.getElementById('inputKM');
+            if(p) p.innerText = v.plate; if(i) i.value = v.odometer > 0 ? v.odometer : '';
+            renderPajak(v.taxDate); analisaKomponen(v); renderLogHistori(v);
         }
 
-        function renderPajak(taxDateStr) {
+        function renderPajak(dStr) {
             const card = document.getElementById('taxCard');
-            const count = document.getElementById('taxCountdown');
-            const desc = document.getElementById('taxDesc');
-            if(!card || !count || !desc) return;
-
-            desc.innerText = taxDateStr ? `Jatuh tempo: ${new Date(taxDateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}` : "Belum diatur";
-            if(!taxDateStr) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-gray-50 border-gray-200 dark:bg-slate-800 dark:border-slate-700 text-gray-500 flex items-center gap-4 shrink-0 transition-all"; count.innerText = "-"; return; }
-            
-            const diffDays = Math.ceil((new Date(taxDateStr) - new Date().setHours(0,0,0,0)) / (1000 * 60 * 60 * 24));
-            if(diffDays < 0) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-red-600 text-white flex items-center gap-4 shrink-0 transition-all"; count.innerText = `TELAT ${Math.abs(diffDays)} HARI!`; }
-            else if (diffDays <= 30) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-orange-500 text-white flex items-center gap-4 shrink-0 transition-all"; count.innerText = `SISA ${diffDays} HARI`; }
-            else { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 flex items-center gap-4 shrink-0 transition-all"; count.innerText = `Aman (${diffDays} hari)`; }
+            const cnt = document.getElementById('taxCountdown');
+            const dsc = document.getElementById('taxDesc');
+            if(!card || !cnt || !dsc) return;
+            dsc.innerText = dStr ? `Tempo: ${new Date(dStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}` : "Belum diatur";
+            if(!dStr) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-gray-50 dark:bg-slate-800 text-gray-500 flex items-center gap-4 shrink-0 transition-all"; cnt.innerText = "-"; return; }
+            const diff = Math.ceil((new Date(dStr) - new Date().setHours(0,0,0,0)) / (1000 * 60 * 60 * 24));
+            if(diff < 0) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-red-600 text-white flex items-center gap-4 shrink-0 transition-all"; cnt.innerText = `TELAT ${Math.abs(diff)} HARI!`; }
+            else if (diff <= 30) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-orange-500 text-white flex items-center gap-4 shrink-0 transition-all"; cnt.innerText = `SISA ${diff} HARI`; }
+            else { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400 flex items-center gap-4 shrink-0 transition-all"; cnt.innerText = `Aman (${diff} hari)`; }
         }
 
         window.updateOdometer = function() {
-            const v = getActiveVehicle();
-            const input = document.getElementById('inputKM');
-            if(!v || !input) return;
-            v.odometer = parseInt(input.value) || 0;
-            analisaKomponen(v); 
-            
-            clearTimeout(window.odoTimer);
-            window.odoTimer = setTimeout(() => saveToCloud(), 1500);
+            const v = getActiveVehicle(); const i = document.getElementById('inputKM');
+            if(!v || !i) return; v.odometer = parseInt(i.value) || 0;
+            analisaKomponen(v); clearTimeout(window.odoT);
+            window.odoT = setTimeout(() => saveToCloud(), 1500);
         }
 
-        window.tandaiSudahServis = function(idKomponen, nama, icon) {
-            const v = getActiveVehicle();
-            if (v.odometer === 0) { alert("Isi Odometer Anda dahulu!"); return; }
-            const tgl = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-            if(confirm(`Konfirmasi ganti [${nama}] di KM ${v.odometer.toLocaleString()}?`)) {
-                if(!v.status) v.status = {};
-                v.status[idKomponen] = { km: v.odometer, tgl: tgl.split(',')[0] };
-                if(!v.history) v.history = [];
-                v.history.unshift({ id: idKomponen, nama: nama, icon: icon, km: v.odometer, tglwaktu: tgl });
+        window.tandaiSudahServis = function(id, name, icon) {
+            const v = getActiveVehicle(); if (v.odometer === 0) return alert("Isi KM dahulu!");
+            const t = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            if(confirm(`Konfirmasi ganti [${name}] di KM ${v.odometer.toLocaleString()}?`)) {
+                if(!v.status) v.status = {}; v.status[id] = { km: v.odometer, tgl: t.split(',')[0] };
+                if(!v.history) v.history = []; v.history.unshift({ id, nama: name, icon, km: v.odometer, tglwaktu: t });
                 analisaKomponen(v); renderLogHistori(v); saveToCloud(); 
             }
         }
 
         function analisaKomponen(v) {
-            const grid = document.getElementById('componentGrid');
-            if(!grid) return;
-            grid.innerHTML = ''; 
-            componentDB[modeApp].forEach(comp => {
-                const dataLama = (v.status && v.status[comp.id]) ? v.status[comp.id] : { km: 0, tgl: '-' };
-                const sisaJarak = (dataLama.km + comp.interval) - v.odometer;
-                let persentase = Math.min(Math.max(((v.odometer - dataLama.km) / comp.interval) * 100, 0), 100);
-                let isDanger = sisaJarak <= 0 && v.odometer > 0;
-                let isWarning = sisaJarak <= 1000 && !isDanger && v.odometer > 0;
-                const card = document.createElement('div');
-                card.className = `rounded-[1.25rem] p-4 border flex flex-col transition-colors ${isDanger ? 'border-red-300 bg-red-50 dark:bg-red-900/10' : 'bg-white dark:bg-dark-card border-gray-100 dark:border-slate-700'}`;
-                card.innerHTML = `
+            const g = document.getElementById('componentGrid'); if(!g) return; g.innerHTML = ''; 
+            componentDB[modeApp].forEach(c => {
+                const dl = (v.status && v.status[c.id]) ? v.status[c.id] : { km: 0, tgl: '-' };
+                const sj = (dl.km + c.interval) - v.odometer;
+                let pr = Math.min(Math.max(((v.odometer - dl.km) / c.interval) * 100, 0), 100);
+                let idg = sj <= 0 && v.odometer > 0;
+                let iwr = sj <= 1000 && !idg && v.odometer > 0;
+                const crd = document.createElement('div');
+                crd.className = `rounded-[1.25rem] p-4 border flex flex-col transition-colors ${idg ? 'border-red-300 bg-red-50 dark:bg-red-900/10' : 'bg-white dark:bg-dark-card border-gray-100 dark:border-slate-700'}`;
+                crd.innerHTML = `
                     <div class="flex justify-between items-start mb-3">
-                        <span class="text-2xl bg-gray-50 dark:bg-slate-800 rounded-xl p-1.5">${comp.icon}</span>
-                        <span class="w-2 h-2 mt-2 rounded-full ${isDanger ? 'bg-red-500 animate-pulse' : (isWarning ? 'bg-orange-400' : 'bg-green-400')}"></span>
+                        <span class="text-2xl bg-gray-50 dark:bg-slate-800 rounded-xl p-1.5">${c.icon}</span>
+                        <span class="w-2 h-2 mt-2 rounded-full ${idg ? 'bg-red-500 animate-pulse' : (iwr ? 'bg-orange-400' : 'bg-green-400')}"></span>
                     </div>
-                    <h4 class="font-bold text-sm leading-tight">${comp.name}</h4>
+                    <h4 class="font-bold text-sm leading-tight">${c.name}</h4>
                     <div class="mt-4 mb-2">
                         <p class="text-[9px] uppercase text-gray-400 font-bold mb-0.5">Sisa Jarak</p>
-                        <p class="text-sm font-black font-mono ${isDanger ? 'text-red-600' : ''}">${sisaJarak > 0 ? sisaJarak.toLocaleString() + ' <span class="text-[9px] font-semibold text-gray-400">km</span>' : 'GANTI SEGERA'}</p>
+                        <p class="text-sm font-black font-mono ${idg ? 'text-red-600' : ''}">${sj > 0 ? sj.toLocaleString() + ' <span class="text-[9px] font-semibold text-gray-400">km</span>' : 'GANTI SEGERA'}</p>
                     </div>
                     <div class="w-full h-1.5 bg-gray-100 dark:bg-slate-800 rounded-full mb-3 overflow-hidden">
-                        <div class="h-full rounded-full ${isDanger ? 'bg-red-500' : 'bg-app-blue'}" style="width: ${persentase}%"></div>
+                        <div class="h-full rounded-full ${idg ? 'bg-red-500' : 'bg-app-blue'}" style="width: ${pr}%"></div>
                     </div>
-                    <button onclick="window.tandaiSudahServis('${comp.id}', '${comp.name}', '${comp.icon}')" class="w-full py-2 rounded-lg text-xs font-bold transition-all active:scale-95 ${isDanger ? 'bg-red-600 text-white' : 'bg-gray-50 dark:bg-slate-800 text-app-blue border border-gray-100 dark:border-slate-700'}">Sudah Servis</button>
-                `;
-                grid.appendChild(card);
+                    <button onclick="window.tandaiSudahServis('${c.id}', '${c.name}', '${c.icon}')" class="w-full py-2 rounded-lg text-xs font-bold transition-all active:scale-95 ${idg ? 'bg-red-600 text-white' : 'bg-gray-50 dark:bg-slate-800 text-app-blue border border-gray-100 dark:border-slate-700'}">Sudah Servis</button>`;
+                g.appendChild(crd);
             });
         }
 
         function renderLogHistori(v) {
-            const list = document.getElementById('historyList');
-            const badge = document.getElementById('badgeHistori');
-            if(!list || !badge) return;
-            badge.innerText = v.history ? v.history.length : 0;
-            if(!v.history || v.history.length === 0) { list.innerHTML = `<div class="text-center py-8 opacity-50">📂 Belum ada riwayat.</div>`; return; }
-            list.innerHTML = '';
-            v.history.forEach(log => {
+            const l = document.getElementById('historyList'); const b = document.getElementById('badgeHistori');
+            if(!l || !b) return; b.innerText = v.history ? v.history.length : 0;
+            if(!v.history || v.history.length === 0) { l.innerHTML = `<div class="text-center py-8 opacity-50">📂 Kosong.</div>`; return; }
+            l.innerHTML = ''; v.history.forEach(log => {
                 const item = document.createElement('div');
                 item.className = "flex items-center gap-3 p-3 mb-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700";
                 item.innerHTML = `<div class="w-10 h-10 bg-white dark:bg-dark-card rounded-lg flex items-center justify-center shrink-0 shadow-sm text-lg">${log.icon}</div>
-                                  <div class="flex-grow"><h4 class="font-bold text-[12px]">${log.nama}</h4><p class="text-[9px] text-gray-500 mt-0.5">${log.tglwaktu}</p></div>
-                                  <div class="text-right"><p class="text-[9px] uppercase text-gray-400 font-bold mb-0.5">KM</p><p class="font-mono text-xs font-black text-app-blue">${log.km.toLocaleString()}</p></div>`;
-                list.appendChild(item);
+                    <div class="flex-grow"><h4 class="font-bold text-[12px]">${log.nama}</h4><p class="text-[9px] text-gray-500 mt-0.5">${log.tglwaktu}</p></div>
+                    <div class="text-right"><p class="text-[9px] uppercase text-gray-400 font-bold mb-0.5">KM</p><p class="font-mono text-xs font-black text-app-blue">${log.km.toLocaleString()}</p></div>`;
+                l.appendChild(item);
             });
         }
 
         window.bukaModalTambah = function() {
-            editVehId = null; 
-            const title = document.getElementById('modalTitle');
-            const nName = document.getElementById('newVehName');
-            const nPlate = document.getElementById('newVehPlate');
-            const nTax = document.getElementById('newVehTax');
-            const modal = document.getElementById('modalTambah');
-
-            if(title) title.innerText = modeApp === 'motor' ? 'Tambah Motor' : 'Tambah Mobil';
-            if(nName) nName.value = ''; 
-            if(nPlate) nPlate.value = ''; 
-            if(nTax) nTax.value = '';
-            if(modal) modal.classList.remove('hidden');
+            editVehId = null; document.getElementById('modalTitle').innerText = modeApp === 'motor' ? 'Tambah Motor' : 'Tambah Mobil';
+            document.getElementById('newVehName').value = ''; document.getElementById('newVehPlate').value = ''; document.getElementById('newVehTax').value = '';
+            document.getElementById('modalTambah').classList.remove('hidden');
         }
 
         window.bukaModalEdit = function() {
-            const v = getActiveVehicle(); 
-            if(!v) return;
-            editVehId = v.id; 
-            const title = document.getElementById('modalTitle');
-            const nName = document.getElementById('newVehName');
-            const nPlate = document.getElementById('newVehPlate');
-            const nTax = document.getElementById('newVehTax');
-            const modal = document.getElementById('modalTambah');
-
-            if(title) title.innerText = 'Edit Data';
-            if(nName) nName.value = v.name; 
-            if(nPlate) nPlate.value = v.plate; 
-            if(nTax) nTax.value = v.taxDate || '';
-            if(modal) modal.classList.remove('hidden');
+            const v = getActiveVehicle(); if(!v) return;
+            editVehId = v.id; document.getElementById('modalTitle').innerText = 'Edit Data';
+            document.getElementById('newVehName').value = v.name; document.getElementById('newVehPlate').value = v.plate;
+            document.getElementById('newVehTax').value = v.taxDate || ''; document.getElementById('modalTambah').classList.remove('hidden');
         }
 
-        window.tutupModalTambah = function() { 
-            const modal = document.getElementById('modalTambah');
-            if(modal) modal.classList.add('hidden'); 
+        window.tutupModalTambah = function() { document.getElementById('modalTambah').classList.add('hidden'); }
+        window.bukaModalProfil = function() { document.getElementById('editUserName').value = userName; document.getElementById('modalProfil').classList.remove('hidden'); }
+        window.tutupModalProfil = function() { document.getElementById('modalProfil').classList.add('hidden'); }
+
+        window.simpanProfil = async function() {
+            const n = document.getElementById('editUserName').value.trim();
+            const p = document.getElementById('editUserPass').value;
+            if(!n) return; userName = n;
+            if(p) { try { await updatePassword(currentUser, p); } catch(e) { alert("Relogin first to change pass!"); } }
+            await saveToCloud(); window.tutupModalProfil(); loadDataFromCloud();
         }
 
         window.simpanKendaraanBaru = async function() {
-            const nName = document.getElementById('newVehName');
-            const nPlate = document.getElementById('newVehPlate');
-            const nTax = document.getElementById('newVehTax');
-            if(!nName || !nPlate || !nTax) return;
-
-            const name = nName.value.trim();
-            const plate = nPlate.value.trim().toUpperCase();
-            const tax = nTax.value;
-
-            if(!name || !plate) return alert("Merek & Plat wajib!");
+            const n = document.getElementById('newVehName').value.trim();
+            const p = document.getElementById('newVehPlate').value.trim().toUpperCase();
+            const t = document.getElementById('newVehTax').value;
+            if(!n || !p) return alert("Wajib!");
             if (editVehId) {
-                const vIdx = vehicles.findIndex(v => v.id === editVehId);
-                if (vIdx > -1) { vehicles[vIdx].name = name; vehicles[vIdx].plate = plate; vehicles[vIdx].taxDate = tax; }
+                const idx = vehicles.findIndex(v => v.id === editVehId);
+                if (idx > -1) { vehicles[idx].name = n; vehicles[idx].plate = p; vehicles[idx].taxDate = t; }
                 editVehId = null; 
             } else {
-                vehicles.push({ id: 'V_' + Date.now(), type: modeApp, name, plate, taxDate: tax, odometer: 0, status: {}, history: [] });
+                vehicles.push({ id: 'V_' + Date.now(), type: modeApp, name: n, plate: p, taxDate: t, odometer: 0, status: {}, history: [] });
                 if(modeApp === 'motor') activeIdMotor = vehicles[vehicles.length-1].id; else activeIdMobil = vehicles[vehicles.length-1].id;
             }
-            window.tutupModalTambah(); 
-            initAppData(); 
-            
-            const loader = document.getElementById('globalLoader');
-            if(loader) loader.classList.remove('hidden');
-            await saveToCloud();
-            if(loader) loader.classList.add('hidden');
+            window.tutupModalTambah(); initAppData(); await saveToCloud();
         }
 
         window.hapusKendaraanAktif = async function() {
-            const v = getActiveVehicle();
-            if(confirm(`Hapus ${v.name}?`)) {
+            const v = getActiveVehicle(); if(confirm(`Hapus ${v.name}?`)) {
                 vehicles = vehicles.filter(item => item.id !== v.id);
                 if(modeApp === 'motor') activeIdMotor = null; else activeIdMobil = null;
-                initAppData(); 
-                
-                const loader = document.getElementById('globalLoader');
-                if(loader) loader.classList.remove('hidden');
-                await saveToCloud();
-                if(loader) loader.classList.add('hidden');
+                initAppData(); await saveToCloud();
             }
         }
     </script>
