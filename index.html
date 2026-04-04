@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>GarasiKu - Cloud Based Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007AFF">
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/png" href="icon.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', 
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+                    colors: {
+                        app: { bg: '#f4f7f6', blue: '#007AFF', green: '#34C759', red: '#FF3B30', orange: '#FF9500' },
+                        dark: { bg: '#0f172a', card: '#1e293b', border: '#334155' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .history-scroll::-webkit-scrollbar { width: 4px; }
+        .history-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .history-scroll::-webkit-scrollbar-thumb { background: #475569; }
+        .mode-transition { transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="bg-app-bg dark:bg-dark-bg text-gray-900 dark:text-gray-100 antialiased min-h-screen transition-colors duration-300">
+
+    <div id="installPromptModal" class="fixed inset-x-0 bottom-0 z-[110] p-4 transform translate-y-full transition-transform duration-500 ease-out flex justify-center">
+        <div class="bg-white dark:bg-dark-card w-full max-w-md p-5 rounded-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.15)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)] border border-gray-100 dark:border-dark-border flex items-center gap-4">
+            <img src="icon.png" alt="Logo" class="w-14 h-14 rounded-2xl shadow-sm bg-gray-50 object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7DqjwvdGV4dD48L3N2Zz4='">
+            <div class="flex-grow">
+                <h3 class="font-bold text-gray-900 dark:text-white text-sm">Install GarasiKu</h3>
+                <p class="text-[10px] text-gray-500 dark:text-gray-400 leading-tight mt-0.5">Akses lebih cepat, layaknya aplikasi asli di layar utama Anda.</p>
+            </div>
+            <div class="flex flex-col gap-2 shrink-0">
+                <button id="btnInstallApp" class="bg-app-blue text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-blue-600 transition shadow-md shadow-blue-200 dark:shadow-none">Install</button>
+                <button id="btnCloseInstall" class="text-[10px] text-gray-400 font-bold hover:text-gray-600 dark:hover:text-gray-200">Nanti saja</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="globalLoader" class="fixed inset-0 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center transition-opacity">
+        <div class="w-12 h-12 border-4 border-gray-200 border-t-app-blue rounded-full animate-spin"></div>
+        <p class="mt-4 font-bold text-gray-600 dark:text-gray-300">Menyambungkan ke Cloud...</p>
+    </div>
+
+    <div id="authPage" class="fixed inset-0 bg-app-bg dark:bg-dark-bg z-50 hidden flex-col items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-card w-full max-w-sm p-8 rounded-[2rem] shadow-xl border border-gray-100 dark:border-dark-border text-center">
+            <img src="icon.png" alt="Logo" class="w-20 h-20 mx-auto rounded-3xl shadow-md mb-4 bg-gray-50 object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7DqjwvdGV4dD48L3N2Zz4='">
+            <h1 class="text-2xl font-extrabold tracking-tight mb-1">GarasiKu Cloud</h1>
+            <p class="text-xs text-gray-500 mb-8">Masuk untuk mengakses data garasi Anda.</p>
+
+            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" id="authEmail" required class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-app-blue outline-none dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" id="authPassword" required minlength="6" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-app-blue outline-none dark:text-white">
+                </div>
+                <button type="submit" id="btnAuthSubmit" class="w-full bg-app-blue text-white font-bold py-3.5 rounded-xl shadow-lg hover:bg-blue-600 transition mt-2">Masuk</button>
+            </form>
+            
+            <p class="text-xs text-gray-500 mt-6">
+                <span id="authModeText">Belum punya akun?</span> 
+                <button onclick="toggleAuthMode()" id="authModeBtn" class="text-app-blue font-bold hover:underline">Daftar disini</button>
+            </p>
+        </div>
+    </div>
+
+    <div id="appWrapper" class="hidden opacity-0 transition-opacity duration-500">
+        <nav class="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-dark-border sticky top-0 z-40">
+            <div class="max-w-6xl mx-auto px-4 sm:px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <img src="icon.png" class="w-8 h-8 rounded-lg shadow-sm" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7DqjwvdGV4dD48L3N2Zz4='">
+                    <h1 class="text-xl font-extrabold tracking-tight">GarasiKu</h1>
+                </div>
+
+                <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+                    <div class="flex items-center bg-gray-100 dark:bg-slate-800 p-1 rounded-xl border border-gray-200 dark:border-slate-700">
+                        <button onclick="window.gantiModeAplikasi('motor')" id="btnMotor" class="px-4 py-1.5 rounded-lg text-sm font-bold mode-transition flex items-center gap-2">🏍️ <span class="hidden sm:inline">Motor</span></button>
+                        <button onclick="window.gantiModeAplikasi('mobil')" id="btnMobil" class="px-4 py-1.5 rounded-lg text-sm font-bold mode-transition flex items-center gap-2">🚗 <span class="hidden sm:inline">Mobil</span></button>
+                    </div>
+
+                    <div class="w-px h-6 bg-gray-300 dark:bg-slate-600 mx-1 hidden sm:block"></div>
+
+                    <button onclick="window.bukaModalTambah()" class="bg-blue-50 dark:bg-blue-900/30 text-app-blue dark:text-blue-400 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-blue-100 transition whitespace-nowrap">+ Tambah</button>
+                    <button onclick="window.toggleTheme()" class="w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-lg transition shrink-0"><span id="themeIcon">🌙</span></button>
+                    <button onclick="window.logoutUser()" class="w-9 h-9 rounded-full bg-red-50 dark:bg-red-900/20 text-red-500 flex items-center justify-center text-lg transition shrink-0 hover:bg-red-100" title="Keluar">🚪</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-6xl mx-auto p-4 md:p-8 lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+            
+            <div id="emptyState" class="col-span-12 text-center py-20 hidden">
+                <span id="emptyIcon" class="text-6xl mb-4 block opacity-50">🚘</span>
+                <h2 class="text-2xl font-bold mb-2" id="emptyTitle">Garasi Masih Kosong</h2>
+                <p class="text-gray-500 dark:text-gray-400 mb-6" id="emptyDesc">Tambahkan kendaraan untuk mulai mencatat.</p>
+                <button onclick="window.bukaModalTambah()" class="bg-app-blue text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 dark:shadow-none hover:bg-blue-600 transition">+ Tambah Kendaraan</button>
+            </div>
+
+            <div id="panelKiri" class="lg:col-span-5 space-y-5 lg:sticky lg:top-24 mb-6 lg:mb-0 hidden flex-col max-h-[85vh]">
+                <div class="bg-white dark:bg-dark-card p-4 rounded-[1.5rem] shadow-sm border border-gray-100 dark:border-dark-border shrink-0">
+                    <label class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2">Pilih Kendaraan Anda</label>
+                    <select id="vehicleSelector" onchange="window.gantiKendaraanAktif()" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white text-lg font-bold rounded-xl px-4 py-3 focus:ring-2 focus:ring-app-blue outline-none appearance-none"></select>
+                    <div class="mt-3 flex justify-between items-center">
+                        <span id="labelPlat" class="bg-gray-100 dark:bg-slate-800 px-3 py-1 rounded-md text-xs font-mono font-bold border tracking-widest border-gray-200 dark:border-slate-700"></span>
+                        <button onclick="window.hapusKendaraanAktif()" class="text-xs text-red-500 hover:text-red-600 font-semibold bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded">Hapus</button>
+                    </div>
+                </div>
+
+                <div id="taxCard" class="p-4 rounded-[1.5rem] shadow-sm border flex items-center gap-4 shrink-0">
+                    <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-2xl shrink-0">📄</div>
+                    <div>
+                        <h4 class="font-bold text-sm" id="taxTitle">Pajak Tahunan</h4>
+                        <p class="text-xs font-medium opacity-90 mt-0.5" id="taxDesc">Jatuh tempo: -</p>
+                        <p class="text-lg font-black font-mono mt-1" id="taxCountdown">-</p>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-dark-card p-5 rounded-[2rem] shadow-sm border border-gray-100 dark:border-dark-border shrink-0">
+                    <p class="text-[11px] text-gray-400 font-bold uppercase tracking-wider text-center mb-3">Odometer di Speedometer</p>
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-2xl p-4 flex flex-col items-center border-2 border-transparent focus-within:border-app-blue/30 transition-all">
+                        <div class="flex items-end gap-1">
+                            <input type="number" id="inputKM" placeholder="0" oninput="window.updateOdometer()" class="w-full max-w-[150px] bg-transparent text-center text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white focus:outline-none focus:text-app-blue">
+                            <span class="text-lg font-bold text-gray-400 mb-1">KM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-dark-card rounded-[2rem] shadow-sm border border-gray-100 dark:border-dark-border flex-grow flex flex-col overflow-hidden min-h-[250px]">
+                    <div class="p-4 border-b border-gray-50 dark:border-slate-700/50 shrink-0 flex justify-between items-center">
+                        <h3 class="font-bold text-sm">Riwayat Servis</h3>
+                        <span id="badgeHistori" class="bg-blue-50 dark:bg-blue-900/30 text-app-blue text-[10px] font-bold px-2 py-1 rounded-lg">0</span>
+                    </div>
+                    <div class="p-2 overflow-y-auto history-scroll h-full" id="historyList"></div>
+                </div>
+            </div>
+
+            <div id="panelKanan" class="lg:col-span-7 hidden pb-10">
+                <div class="flex items-center justify-between mb-4 px-1">
+                    <h2 class="text-lg font-extrabold tracking-tight">Status Komponen</h2>
+                    <span id="labelMode" class="text-xs bg-gray-100 dark:bg-slate-800 px-3 py-1 rounded-full font-semibold text-gray-500"></span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-3 md:gap-4" id="componentGrid"></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="modalTambah" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-card p-6 md:p-8 rounded-[2rem] w-full max-w-md shadow-2xl border border-gray-100 dark:border-slate-700">
+            <h2 class="text-2xl font-extrabold mb-1 dark:text-white" id="modalTitle">Tambah Kendaraan</h2>
+            <div class="space-y-4 mt-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Merek & Tipe</label>
+                    <input type="text" id="newVehName" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 outline-none dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Plat Nomor</label>
+                    <input type="text" id="newVehPlate" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm uppercase font-mono focus:ring-2 outline-none dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1.5">Jatuh Tempo Pajak</label>
+                    <input type="date" id="newVehTax" class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 outline-none dark:text-white">
+                </div>
+            </div>
+            <div class="flex gap-3 mt-8">
+                <button onclick="window.tutupModalTambah()" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-bold dark:bg-slate-800 dark:text-gray-300">Batal</button>
+                <button onclick="window.simpanKendaraanBaru()" class="flex-1 bg-app-blue text-white py-3 rounded-xl font-bold hover:bg-blue-600">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Registrasi Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then((registration) => {
+                    console.log('PWA ServiceWorker registered');
+                }).catch((error) => {
+                    console.log('PWA ServiceWorker failed:', error);
+                });
+            });
+        }
+
+        // Logika Pop-up Install "Add to Home Screen"
+        let deferredPrompt;
+        const installModal = document.getElementById('installPromptModal');
+        const btnInstall = document.getElementById('btnInstallApp');
+        const btnClose = document.getElementById('btnCloseInstall');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Cegah browser memunculkan prompt default yang jelek
+            e.preventDefault();
+            deferredPrompt = e;
+            // Munculkan Modal Kustom kita (Slide dari bawah)
+            setTimeout(() => {
+                installModal.classList.remove('translate-y-full');
+            }, 2000); // Muncul 2 detik setelah buka web
+        });
+
+        btnInstall.addEventListener('click', async () => {
+            installModal.classList.add('translate-y-full'); // Sembunyikan modal
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // Tampilkan prompt resmi Android/iOS
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        btnClose.addEventListener('click', () => {
+            installModal.classList.add('translate-y-full'); // Sembunyikan jika klik 'Nanti saja'
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        // ==========================================
+        // KONFIGURASI FIREBASE ANDA
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDpMC-KiFYBHqDIbT7Fq-tSfLlWO3RsWAA",
+            authDomain: "garasiku-1a3c8.firebaseapp.com",
+            databaseURL: "https://garasiku-1a3c8-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "garasiku-1a3c8",
+            storageBucket: "garasiku-1a3c8.firebasestorage.app",
+            messagingSenderId: "764573839741",
+            appId: "1:764573839741:web:b37b74b5b6d0f874335c14"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let isLoginMode = true;
+        let currentUser = null;
+        let modeApp = 'motor';
+        let vehicles = [];
+        let activeIdMotor = null;
+        let activeIdMobil = null;
+
+        const componentDB = {
+            motor: [
+                { id: 'm_oli_mesin', name: 'Oli Mesin', icon: '🛢️', interval: 4000 },
+                { id: 'm_oli_gardan', name: 'Oli Gardan', icon: '⚙️', interval: 8000 },
+                { id: 'm_busi', name: 'Busi Motor', icon: '⚡', interval: 8000 },
+                { id: 'm_filter', name: 'Filter Udara', icon: '💨', interval: 16000 },
+                { id: 'm_kampas', name: 'Kampas Rem', icon: '🛑', interval: 15000 },
+                { id: 'm_radiator', name: 'Air Radiator', icon: '💧', interval: 24000 },
+                { id: 'm_cvt', name: 'V-Belt / CVT', icon: '⛓️', interval: 24000 }
+            ],
+            mobil: [
+                { id: 'c_oli_mesin', name: 'Oli Mesin', icon: '🛢️', interval: 10000 },
+                { id: 'c_filter_oli', name: 'Filter Oli', icon: '🔄', interval: 10000 },
+                { id: 'c_filter_ac', name: 'Filter AC', icon: '❄️', interval: 10000 },
+                { id: 'c_busi', name: 'Busi Mobil', icon: '⚡', interval: 40000 },
+                { id: 'c_filter_udara', name: 'Filter Mesin', icon: '💨', interval: 40000 },
+                { id: 'c_minyak_rem', name: 'Minyak Rem', icon: '🛑', interval: 40000 },
+                { id: 'c_oli_transmisi', name: 'Transmisi', icon: '⚙️', interval: 40000 },
+                { id: 'c_radiator', name: 'Radiator', icon: '💧', interval: 80000 }
+            ]
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            const loader = document.getElementById('globalLoader');
+            if (user) {
+                currentUser = user;
+                await loadDataFromCloud();
+                document.getElementById('authPage').classList.add('hidden');
+                document.getElementById('appWrapper').classList.remove('hidden');
+                setTimeout(() => document.getElementById('appWrapper').classList.remove('opacity-0'), 100);
+            } else {
+                currentUser = null;
+                document.getElementById('authPage').classList.remove('hidden');
+                document.getElementById('authPage').classList.add('flex');
+                document.getElementById('appWrapper').classList.add('hidden');
+                document.getElementById('appWrapper').classList.add('opacity-0');
+            }
+            loader.classList.add('hidden'); 
+        });
+
+        window.toggleAuthMode = function() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('btnAuthSubmit').innerText = isLoginMode ? 'Masuk' : 'Daftar Akun Baru';
+            document.getElementById('authModeText').innerText = isLoginMode ? 'Belum punya akun?' : 'Sudah punya akun?';
+            document.getElementById('authModeBtn').innerText = isLoginMode ? 'Daftar disini' : 'Masuk disini';
+        }
+
+        window.handleAuth = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            document.getElementById('globalLoader').classList.remove('hidden');
+
+            try {
+                if (isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                }
+            } catch (error) {
+                document.getElementById('globalLoader').classList.add('hidden');
+                alert("Gagal: " + error.message);
+            }
+        }
+
+        window.logoutUser = function() {
+            if(confirm("Yakin ingin keluar dari GarasiKu?")) signOut(auth);
+        }
+
+        async function loadDataFromCloud() {
+            try {
+                const docRef = doc(db, "userData", currentUser.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    vehicles = data.vehicles || [];
+                    activeIdMotor = data.activeIdMotor || null;
+                    activeIdMobil = data.activeIdMobil || null;
+                    modeApp = data.modeApp || 'motor';
+                } else {
+                    vehicles = [];
+                }
+                window.gantiModeAplikasi(modeApp);
+            } catch(e) { console.error("Gagal ambil data", e); }
+        }
+
+        async function saveToCloud() {
+            if(!currentUser) return;
+            try {
+                await setDoc(doc(db, "userData", currentUser.uid), {
+                    vehicles: vehicles,
+                    activeIdMotor: activeIdMotor,
+                    activeIdMobil: activeIdMobil,
+                    modeApp: modeApp
+                });
+            } catch(e) {
+                console.error("Gagal simpan ke cloud", e);
+                alert("Koneksi bermasalah, gagal menyimpan ke Cloud.");
+            }
+        }
+
+        function getVehiclesByMode() { return vehicles.filter(v => v.type === modeApp); }
+        function getActiveVehicle() { return vehicles.find(v => v.id === (modeApp === 'motor' ? activeIdMotor : activeIdMobil)); }
+
+        window.gantiModeAplikasi = function(targetMode) {
+            modeApp = targetMode;
+            saveToCloud(); 
+            
+            document.getElementById('btnMotor').className = modeApp === 'motor' ? "px-4 py-1.5 rounded-lg text-sm font-bold mode-transition flex items-center gap-2 bg-white dark:bg-dark-card shadow-sm text-app-blue" : "px-4 py-1.5 rounded-lg text-sm font-bold mode-transition flex items-center gap-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300";
+            document.getElementById('btnMobil').className = modeApp === 'mobil' ? "px-4 py-1.5 rounded-lg text-sm font-bold mode-transition flex items-center gap-2 bg-white dark:bg-dark-card shadow-sm text-app-blue" : "px-4 py-1.5 rounded-lg text-sm font-bold mode-transition flex items-center gap-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300";
+            document.getElementById('logoIcon').innerText = modeApp === 'motor' ? '🏍️' : '🚗';
+            document.getElementById('labelMode').innerText = modeApp === 'motor' ? 'Part Motor' : 'Part Mobil';
+
+            initAppData();
+        }
+
+        function initAppData() {
+            const listMode = getVehiclesByMode();
+            if(modeApp === 'motor' && !activeIdMotor && listMode.length > 0) activeIdMotor = listMode[0].id;
+            if(modeApp === 'mobil' && !activeIdMobil && listMode.length > 0) activeIdMobil = listMode[0].id;
+
+            const pKiri = document.getElementById('panelKiri');
+            const pKanan = document.getElementById('panelKanan');
+            const eState = document.getElementById('emptyState');
+
+            if (listMode.length === 0) {
+                pKiri.classList.add('hidden'); pKiri.classList.remove('flex');
+                pKanan.classList.add('hidden'); eState.classList.remove('hidden');
+                document.getElementById('emptyIcon').innerText = modeApp === 'motor' ? '🏍️' : '🚘';
+                document.getElementById('emptyTitle').innerText = modeApp === 'motor' ? 'Garasi Motor Kosong' : 'Garasi Mobil Kosong';
+            } else {
+                pKiri.classList.remove('hidden'); pKiri.classList.add('flex');
+                pKanan.classList.remove('hidden'); eState.classList.add('hidden');
+                
+                const selector = document.getElementById('vehicleSelector');
+                selector.innerHTML = '';
+                const activeId = modeApp === 'motor' ? activeIdMotor : activeIdMobil;
+                listMode.forEach(v => {
+                    const opt = document.createElement('option');
+                    opt.value = v.id; opt.innerText = v.name;
+                    if(v.id === activeId) opt.selected = true;
+                    selector.appendChild(opt);
+                });
+                renderAll();
+            }
+        }
+
+        window.gantiKendaraanAktif = function() {
+            const val = document.getElementById('vehicleSelector').value;
+            if(modeApp === 'motor') activeIdMotor = val; else activeIdMobil = val;
+            saveToCloud();
+            renderAll();
+        }
+
+        function renderAll() {
+            const v = getActiveVehicle();
+            if(!v) return;
+            document.getElementById('labelPlat').innerText = v.plate;
+            document.getElementById('inputKM').value = v.odometer > 0 ? v.odometer : '';
+            renderPajak(v.taxDate);
+            analisaKomponen(v);
+            renderLogHistori(v);
+        }
+
+        function renderPajak(taxDateStr) {
+            const card = document.getElementById('taxCard');
+            const count = document.getElementById('taxCountdown');
+            document.getElementById('taxDesc').innerText = taxDateStr ? `Jatuh tempo: ${new Date(taxDateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}` : "Belum diatur";
+            
+            if(!taxDateStr) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-gray-50 border-gray-200 dark:bg-slate-800 dark:border-slate-700"; count.innerText = "-"; return; }
+            const diffDays = Math.ceil((new Date(taxDateStr) - new Date().setHours(0,0,0,0)) / (1000 * 60 * 60 * 24));
+
+            if(diffDays < 0) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-red-600 text-white"; count.innerText = `TELAT ${Math.abs(diffDays)} HARI!`; }
+            else if (diffDays <= 30) { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-orange-500 text-white"; count.innerText = `SISA ${diffDays} HARI`; }
+            else { card.className = "p-4 rounded-[1.5rem] shadow-sm border bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"; count.innerText = `Aman (${diffDays} hari)`; }
+        }
+
+        window.updateOdometer = function() {
+            const v = getActiveVehicle();
+            if(!v) return;
+            v.odometer = parseInt(document.getElementById('inputKM').value) || 0;
+            analisaKomponen(v); 
+        }
+
+        window.tandaiSudahServis = function(idKomponen, nama, icon) {
+            const v = getActiveVehicle();
+            if (v.odometer === 0) { alert("Isi Odometer Anda terlebih dahulu!"); return; }
+            const tgl = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+            if(confirm(`Konfirmasi ganti [${nama}] di KM ${v.odometer.toLocaleString()}?`)) {
+                if(!v.status) v.status = {};
+                v.status[idKomponen] = { km: v.odometer, tgl: tgl.split(',')[0] };
+                if(!v.history) v.history = [];
+                v.history.unshift({ id: idKomponen, nama: nama, icon: icon, km: v.odometer, tglwaktu: tgl });
+                
+                analisaKomponen(v);
+                renderLogHistori(v);
+                saveToCloud(); 
+            }
+        }
+
+        function analisaKomponen(v) {
+            const grid = document.getElementById('componentGrid');
+            grid.innerHTML = ''; 
+            componentDB[modeApp].forEach(comp => {
+                const dataLama = (v.status && v.status[comp.id]) ? v.status[comp.id] : { km: 0, tgl: '-' };
+                const sisaJarak = (dataLama.km + comp.interval) - v.odometer;
+                let persentase = Math.min(Math.max(((v.odometer - dataLama.km) / comp.interval) * 100, 0), 100);
+                
+                let isDanger = sisaJarak <= 0 && v.odometer > 0;
+                let isWarning = sisaJarak <= 1000 && !isDanger && v.odometer > 0;
+
+                const card = document.createElement('div');
+                card.className = `rounded-[1.25rem] p-4 border flex flex-col transition-colors ${isDanger ? 'border-red-300 bg-red-50 dark:bg-red-900/10' : 'bg-white dark:bg-dark-card border-gray-100 dark:border-slate-700'}`;
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-2xl bg-gray-50 dark:bg-slate-800 rounded-xl p-1.5">${comp.icon}</span>
+                        <span class="w-2 h-2 mt-2 rounded-full ${isDanger ? 'bg-red-500 animate-pulse' : (isWarning ? 'bg-orange-400' : 'bg-green-400')}"></span>
+                    </div>
+                    <h4 class="font-bold text-sm leading-tight">${comp.name}</h4>
+                    <div class="mt-4 mb-2">
+                        <p class="text-[9px] uppercase text-gray-400 font-bold mb-0.5">Sisa Jarak</p>
+                        <p class="text-sm font-black font-mono ${isDanger ? 'text-red-600' : ''}">${sisaJarak > 0 ? sisaJarak.toLocaleString() + ' <span class="text-[9px] font-semibold text-gray-400">km</span>' : 'GANTI SEGERA'}</p>
+                    </div>
+                    <div class="w-full h-1.5 bg-gray-100 dark:bg-slate-800 rounded-full mb-3 overflow-hidden">
+                        <div class="h-full rounded-full ${isDanger ? 'bg-red-500' : 'bg-app-blue'}" style="width: ${persentase}%"></div>
+                    </div>
+                    <button onclick="window.tandaiSudahServis('${comp.id}', '${comp.name}', '${comp.icon}')" class="w-full py-2 rounded-lg text-xs font-bold transition-all active:scale-95 ${isDanger ? 'bg-red-600 text-white' : 'bg-gray-50 dark:bg-slate-800 text-app-blue border border-gray-100 dark:border-slate-700'}">Sudah Servis</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderLogHistori(v) {
+            const list = document.getElementById('historyList');
+            document.getElementById('badgeHistori').innerText = v.history ? v.history.length : 0;
+            if(!v.history || v.history.length === 0) { list.innerHTML = `<div class="text-center py-8 opacity-50">📂 Belum ada riwayat.</div>`; return; }
+            list.innerHTML = '';
+            v.history.forEach(log => {
+                const item = document.createElement('div');
+                item.className = "flex items-center gap-3 p-3 mb-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700";
+                item.innerHTML = `<div class="w-10 h-10 bg-white dark:bg-dark-card rounded-lg flex items-center justify-center shrink-0 shadow-sm text-lg">${log.icon}</div>
+                                  <div class="flex-grow"><h4 class="font-bold text-[12px]">${log.nama}</h4><p class="text-[9px] text-gray-500 mt-0.5">${log.tglwaktu}</p></div>
+                                  <div class="text-right"><p class="text-[9px] uppercase text-gray-400 font-bold mb-0.5">KM</p><p class="font-mono text-xs font-black text-app-blue">${log.km.toLocaleString()}</p></div>`;
+                list.appendChild(item);
+            });
+        }
+
+        window.bukaModalTambah = function() {
+            document.getElementById('modalTitle').innerText = modeApp === 'motor' ? 'Tambah Motor' : 'Tambah Mobil';
+            document.getElementById('newVehName').value = ''; document.getElementById('newVehPlate').value = '';
+            document.getElementById('modalTambah').classList.remove('hidden');
+        }
+
+        window.tutupModalTambah = function() { document.getElementById('modalTambah').classList.add('hidden'); }
+
+        window.simpanKendaraanBaru = async function() {
+            const name = document.getElementById('newVehName').value.trim();
+            const plate = document.getElementById('newVehPlate').value.trim().toUpperCase();
+            const tax = document.getElementById('newVehTax').value;
+            if(!name || !plate) return alert("Merek dan Plat wajib diisi!");
+            
+            const newVeh = { id: 'V_' + Date.now(), type: modeApp, name: name, plate: plate, taxDate: tax, odometer: 0, status: {}, history: [] };
+            vehicles.push(newVeh);
+            if(modeApp === 'motor') activeIdMotor = newVeh.id; else activeIdMobil = newVeh.id;
+            
+            tutupModalTambah();
+            initAppData();
+            
+            document.getElementById('globalLoader').classList.remove('hidden');
+            await saveToCloud();
+            document.getElementById('globalLoader').classList.add('hidden');
+        }
+
+        window.hapusKendaraanAktif = async function() {
+            const v = getActiveVehicle();
+            if(confirm(`Hapus ${v.name} dari Garasi Cloud Anda?`)) {
+                vehicles = vehicles.filter(item => item.id !== v.id);
+                if(modeApp === 'motor') activeIdMotor = null; else activeIdMobil = null;
+                initAppData();
+                
+                document.getElementById('globalLoader').classList.remove('hidden');
+                await saveToCloud();
+                document.getElementById('globalLoader').classList.add('hidden');
+            }
+        }
+
+        // --- DARK MODE LOGIC ---
+        let isDarkMode = localStorage.getItem('Garasi_Theme') === 'dark';
+        if (isDarkMode) document.documentElement.classList.add('dark');
+        window.toggleTheme = function() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('Garasi_Theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            document.getElementById('themeIcon').innerText = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+        }
+    </script>
+</body>
+</html>
