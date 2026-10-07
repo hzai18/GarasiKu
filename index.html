@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- PWA META TAGS -->
     <title>GarasiKu - Cloud Based Tracker</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#007AFF">
@@ -38,6 +39,7 @@
         .animate-spin-slow { animation: spin-slow 2s linear infinite; }
     </style>
 
+    <!-- SCRIPT DARK MODE -->
     <script>
         if (localStorage.getItem('Garasi_Theme') === 'dark') { document.documentElement.classList.add('dark'); } 
         else { document.documentElement.classList.remove('dark'); }
@@ -59,6 +61,7 @@
 </head>
 <body class="bg-app-bg dark:bg-dark-bg text-gray-900 dark:text-gray-100 antialiased min-h-screen transition-colors duration-300">
 
+    <!-- POPUP INSTALL PWA -->
     <div id="installPromptModal" class="fixed inset-x-0 bottom-0 z-[110] p-4 transform translate-y-full transition-transform duration-500 ease-out flex justify-center">
         <div class="bg-white dark:bg-dark-card w-full max-w-md p-5 rounded-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.15)] border border-gray-100 dark:border-dark-border flex items-center gap-4">
             <img src="icon.png" alt="Logo" class="w-14 h-14 rounded-2xl shadow-sm bg-gray-50 object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7DqjwvdGV4dD48L3N2Zz4='">
@@ -73,6 +76,7 @@
         </div>
     </div>
 
+    <!-- OVERLAY LOADING GLOBAL -->
     <div id="globalLoader" class="fixed inset-0 bg-white dark:bg-dark-bg z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="relative flex items-center justify-center mb-6">
             <div class="absolute w-24 h-24 bg-app-blue/20 rounded-full animate-ping"></div>
@@ -82,6 +86,7 @@
         <p class="text-xs font-bold text-gray-400 dark:text-gray-500 mt-1 uppercase tracking-tighter">Syncing Cloud Data...</p>
     </div>
 
+    <!-- HALAMAN LOGIN / REGISTER -->
     <div id="authPage" class="fixed inset-0 bg-app-bg dark:bg-dark-bg z-50 hidden flex-col items-center justify-center p-4">
         <div class="bg-white dark:bg-dark-card w-full max-w-sm p-8 rounded-[2rem] shadow-xl border border-gray-100 dark:border-dark-border text-center transition-all duration-300">
             <img src="icon.png" alt="Logo" class="w-20 h-20 mx-auto rounded-3xl shadow-md mb-4 bg-gray-50 object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7DqjwvdGV4dD48L3N2Zz4='">
@@ -114,7 +119,9 @@
         </div>
     </div>
 
+    <!-- WRAPPER APLIKASI -->
     <div id="appWrapper" class="hidden opacity-0 transition-opacity duration-500">
+        <!-- NAVBAR -->
         <nav class="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-dark-border sticky top-0 z-40">
             <div class="max-w-6xl mx-auto px-4 sm:px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
@@ -144,6 +151,7 @@
             </div>
         </nav>
 
+        <!-- KONTEN UTAMA -->
         <main class="max-w-6xl mx-auto p-4 md:p-8 lg:grid lg:grid-cols-12 lg:gap-8 items-start">
             
             <div id="emptyState" class="col-span-12 text-center py-20 hidden">
@@ -153,6 +161,7 @@
                 <button onclick="window.bukaModalTambah()" class="bg-app-blue text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-600 transition">+ Tambah Kendaraan</button>
             </div>
 
+            <!-- PANEL KIRI -->
             <div id="panelKiri" class="lg:col-span-5 space-y-5 lg:sticky lg:top-24 mb-6 lg:mb-0 hidden flex-col max-h-[85vh]">
                 <div class="bg-white dark:bg-dark-card p-4 rounded-[1.5rem] shadow-sm border border-gray-100 dark:border-dark-border shrink-0">
                     <label class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2">Pilih Kendaraan Anda</label>
@@ -194,6 +203,7 @@
                     <div class="p-2 overflow-y-auto history-scroll h-full" id="historyList"></div>
                 </div>
 
+                <!-- KARTU KREATOR -->
                 <div class="bg-gradient-to-br from-gray-900 to-slate-800 p-4 rounded-[1.5rem] shadow-lg border border-white/10 flex items-center gap-4 transition-transform hover:scale-[1.02] duration-300">
                     <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-xl shrink-0 backdrop-blur-md">💻</div>
                     <div>
@@ -206,6 +216,7 @@
                 </div>
             </div>
 
+            <!-- PANEL KANAN -->
             <div id="panelKanan" class="lg:col-span-7 hidden pb-10">
                 <div class="flex items-center justify-between mb-4 px-1">
                     <h2 class="text-lg font-extrabold tracking-tight">Status Komponen</h2>
@@ -216,6 +227,7 @@
         </main>
     </div>
 
+    <!-- MODAL TAMBAH & EDIT -->
     <div id="modalTambah" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-dark-card p-6 md:p-8 rounded-[2rem] w-full max-w-md shadow-2xl border border-gray-100 dark:border-slate-700">
             <h2 class="text-2xl font-extrabold mb-1 dark:text-white" id="modalTitle">Tambah Kendaraan</h2>
@@ -240,6 +252,7 @@
         </div>
     </div>
 
+    <!-- MODAL PROFIL -->
     <div id="modalProfil" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-dark-card p-6 md:p-8 rounded-[2rem] w-full max-w-md shadow-2xl border border-gray-100 dark:border-slate-700">
             <h2 class="text-2xl font-extrabold mb-1 dark:text-white">Pengaturan Akun</h2>
@@ -260,6 +273,7 @@
         </div>
     </div>
 
+    <!-- SCRIPT PWA -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW fail:', err)); });
@@ -277,6 +291,7 @@
         document.getElementById('btnCloseInstall').addEventListener('click', () => { installModal.classList.add('translate-y-full'); });
     </script>
 
+    <!-- SCRIPT FIREBASE & LOGIKA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, updatePassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
@@ -497,11 +512,13 @@
             }
         }
 
+        // FUNGSI ANALISA KOMPONEN DIPERBARUI (MENAMPILKAN TARGET KM)
         function analisaKomponen(v) {
             const g = document.getElementById('componentGrid'); if(!g) return; g.innerHTML = ''; 
             componentDB[modeApp].forEach(c => {
                 const dl = (v.status && v.status[c.id]) ? v.status[c.id] : { km: 0, tgl: '-' };
-                const sj = (dl.km + c.interval) - v.odometer;
+                const targetKM = dl.km + c.interval; // PERHITUNGAN TARGET KM
+                const sj = targetKM - v.odometer;
                 let pr = Math.min(Math.max(((v.odometer - dl.km) / c.interval) * 100, 0), 100);
                 let idg = sj <= 0 && v.odometer > 0;
                 let iwr = sj <= 1000 && !idg && v.odometer > 0;
@@ -513,9 +530,15 @@
                         <span class="w-2 h-2 mt-2 rounded-full ${idg ? 'bg-red-500 animate-pulse' : (iwr ? 'bg-orange-400' : 'bg-green-400')}"></span>
                     </div>
                     <h4 class="font-bold text-sm leading-tight">${c.name}</h4>
-                    <div class="mt-4 mb-2">
-                        <p class="text-[9px] uppercase text-gray-400 font-bold mb-0.5">Sisa Jarak</p>
-                        <p class="text-sm font-black font-mono ${idg ? 'text-red-600' : ''}">${sj > 0 ? sj.toLocaleString() + ' <span class="text-[9px] font-semibold text-gray-400">km</span>' : 'GANTI SEGERA'}</p>
+                    <div class="mt-4 mb-2 flex justify-between items-end">
+                        <div>
+                            <p class="text-[9px] uppercase text-gray-400 font-bold mb-0.5">Sisa Jarak</p>
+                            <p class="text-sm font-black font-mono ${idg ? 'text-red-600' : ''}">${sj > 0 ? sj.toLocaleString() + ' <span class="text-[9px] font-semibold text-gray-400">km</span>' : 'GANTI SEGERA'}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] uppercase text-gray-400 font-bold mb-0.5">Ganti di KM</p>
+                            <p class="text-xs font-bold font-mono text-gray-500 dark:text-gray-400">${targetKM.toLocaleString()}</p>
+                        </div>
                     </div>
                     <div class="w-full h-1.5 bg-gray-100 dark:bg-slate-800 rounded-full mb-3 overflow-hidden">
                         <div class="h-full rounded-full ${idg ? 'bg-red-500' : 'bg-app-blue'}" style="width: ${pr}%"></div>
